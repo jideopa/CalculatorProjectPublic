@@ -5,7 +5,7 @@ Feature: Addition feature
   Scenario: Successful addition
     Given  user is on the calculator page
     When user perform addition of 8 plus 8
-    Then User should be able to see the expected result 16
+    Then User should be able to see the expected result "16"
 @Subtraction
     Scenario: Successful subtraction
       Given user is on the calculator page

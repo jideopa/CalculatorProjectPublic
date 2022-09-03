@@ -1,5 +1,6 @@
 package definition;
 
+import base.AppBase;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
@@ -12,20 +13,20 @@ import static org.junit.Assert.*;
 
 import java.util.concurrent.TimeUnit;
 
-public class CalculatorStepDefinition{
-   static WebDriver driver;
-
+public class CalculatorStepDefinition extends AppBase {
     @Given("user is on the calculator page")
     public void userLaunchTheBrowser() throws InterruptedException {
-        WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-     TimeUnit.SECONDS.sleep(3);
      driver.get("https://www.calculatorsoup.com/calculators/math/basic.php");
      TimeUnit.SECONDS.sleep(3);
     }
 
  @When("user perform addition of {int} plus {int}")
- public void userPerformAdditionOfPlus(int arg0, int arg1) throws InterruptedException {
+ public void userPerformAdditionOfPlus(int numOne, int arg1) throws InterruptedException {
+
+     driver.findElement(By.xpath("/html/body/div[1]/div/main/div[3]/div[1]/div[2]/form/div[4]/input[2]")).sendKeys();
+     TimeUnit.SECONDS.sleep(2);
+
+
      // Click on 8
   driver.findElement(By.xpath("/html/body/div[1]/div/main/div[3]/div[1]/div[2]/form/div[4]/input[2]")).click();
   TimeUnit.SECONDS.sleep(2);
@@ -42,14 +43,9 @@ public class CalculatorStepDefinition{
  }
 
  @Then("User should be able to see the expected result {int}")
- public void userShouldBeAbleToSeeTheExpectedResult(int arg0) {
+ public void userShouldBeAbleToSeeTheExpectedResult(int expectedAns) {
     // FIND THE ELEMENT
-  WebElement result = driver.findElement(By.cssSelector("input#display"));
 
-      String actualResult = result.getAttribute("value");
-      String expectedResult = "16";
-       System.out.println(expectedResult);
-      assertEquals(expectedResult,actualResult);
  }
 
     @When("user perform subtraction of {int} minus {int}")
@@ -103,7 +99,19 @@ public class CalculatorStepDefinition{
         System.out.println(expectedResult);
     }
 
+    @Then("User should be able to see the expected result {string}")
+    public void userShouldBeAbleToSeeTheExpectedResult(String expectedResult) {
+        WebElement result = driver.findElement(By.cssSelector("input#display"));
+
+//Get the value from the web page and storing it in a Java variable
+        String actualResult = result.getAttribute("value");
+
+        System.out.println(expectedResult);
+
+        // jUNIT assert to check if my test is pass/fail
+        assertEquals(expectedResult,actualResult);
     }
+}
 
 
 
